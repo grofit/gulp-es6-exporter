@@ -9,7 +9,8 @@ const PLUGIN_NAME = 'gulp-es6-exporter';
 
 var generateExportFor = function(sourceFile, rootDir) {
     var srcPath = path.dirname(sourceFile);
-    var srcFilename = path.basename(sourceFile);
+    var extension = path.extname(sourceFile);
+    var srcFilename = path.basename(sourceFile, extension);
     var relativePath = path.relative(rootDir, srcPath);
     relativePath = (relativePath == "" ? "." : "./" + relativePath);
     return new Buffer('export * from "' + relativePath + "/" + srcFilename + '"\n');
