@@ -22,6 +22,34 @@ You can however provide the option root to provide where it is running from:
 
 ```
 exporter("amaze.js", { root: "test" })
+
+// Created amaze.js
+export * from './test-1';
+export * from './test-2';
+//etc
+
+// If we were not to use the root option it would output
+
+// Created amaze.js (without root)
+export * from './test/test-1';
+export * from './test/test-2';
+//etc
+```
+This would assume it is re-exporting from within the test folder so it would remove the "./test" prefix and put in "./".
+
+There is also for typescript people the option for module to wrap the re-exports within a new module.
+
+```
+exporter("amaze.ts", { module: "spiffy-module" });
+
+// Created amaze.ts
+module "spiffy-module"
+{
+    export * from "./test/test-1";
+    export * from "./test/test-2";
+    // etc
+}
 ```
 
-This would assume it is re-exporting from within the test folder so it would remove the "./test" prefix and put in "./".
+This is the reason I made the module to basically wrap my internal files in an external module without having to litter module syntax throughout each.
+

@@ -7,13 +7,13 @@ var File = gutil.File;
 // consts
 const PLUGIN_NAME = 'gulp-es6-exporter';
 
-var generateExportFor = function(sourceFile, rootDir) {
+var generateExportFor = function(sourceFile, rootDir, shouldTab) {
     var srcPath = path.dirname(sourceFile);
     var extension = path.extname(sourceFile);
     var srcFilename = path.basename(sourceFile, extension);
     var relativePath = path.relative(rootDir, srcPath);
     relativePath = (relativePath == "" ? "." : "./" + relativePath);
-    return new Buffer('export * from "' + relativePath + "/" + srcFilename + '"\n');
+    return new Buffer((shouldTab ? "\t" : "") + 'export * from "' + relativePath + "/" + srcFilename + '"\n');
 };
 
 // plugin level function (dealing with files)
@@ -26,6 +26,12 @@ function gulpExporter(destinationFile, options) {
     var root = options.root || "./";
 
     var contents = new Buffer("");
+
+    if(options.module)
+    {
+        var moduleBuffer = new Buffer('module "' + options.module + '" \n{\n');
+        contents = Buffer.concat([contents, moduleBuffer]);
+    }
 
     function bufferContents(file, enc, cb) {
         // ignore empty files
@@ -41,7 +47,7 @@ function gulpExporter(destinationFile, options) {
             return;
         }
 
-        var newExport = generateExportFor(file.path, root);
+        var newExport = generateExportFor(file.path, root, options.module);
         contents = Buffer.concat([contents, newExport]);
         cb();
     }
@@ -51,6 +57,12 @@ function gulpExporter(destinationFile, options) {
         if (!contents) {
             cb();
             return;
+        }
+
+        if(options.module)
+        {
+            var endModuleBuffer = new Buffer('}');
+            contents = Buffer.concat([contents, endModuleBuffer]);
         }
 
         var exporterFile = new File();
