@@ -1,6 +1,6 @@
 {
   "name": "gulp-es6-exporter",
-  "version": "0.0.2",
+  "version": "0.0.4",
   "dependencies": {
     "gulp-util": "^3.0.1",
     "through2": "^0.6.3"
