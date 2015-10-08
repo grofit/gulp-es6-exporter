@@ -43,7 +43,7 @@ There is also for typescript people the option for module to wrap the re-exports
 exporter("amaze.ts", { module: "spiffy-module" });
 
 // Created amaze.ts
-module "spiffy-module"
+declare module "spiffy-module"
 {
     export * from "./test/test-1";
     export * from "./test/test-2";

@@ -13,7 +13,8 @@ var generateExportFor = function(sourceFile, rootDir, shouldTab) {
     var srcFilename = path.basename(sourceFile, extension);
     var relativePath = path.relative(rootDir, srcPath);
     relativePath = (relativePath == "" ? "." : "./" + relativePath);
-    return new Buffer((shouldTab ? "\t" : "") + 'export * from "' + relativePath + "/" + srcFilename + '"\n');
+    var finalPath = (relativePath + "/" + srcFilename).replace("\\", "/");
+    return new Buffer((shouldTab ? "\t" : "") + 'export * from "' + finalPath + '"\n');
 };
 
 // plugin level function (dealing with files)
