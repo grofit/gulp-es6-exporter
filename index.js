@@ -27,6 +27,9 @@ function gulpExporter(destinationFile, options) {
     var root = options.root || "./";
 
     var contents = new Buffer("");
+    
+    var generatedHeadingBuffer = new Buffer('/* This is an auto-generated file by gulp-es6-exporter */\n\n');
+    contents = Buffer.concat([generatedHeadingBuffer, contents]);
 
     if(options.module)
     {
